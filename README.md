@@ -22,7 +22,7 @@
 
 1.  Projeyi klonlayın:
     ```bash
-    git clone https://github.com/kullaniciadi/Bitirme.git
+    git clone https://github.com/kullaniciadi/Bitirme.git](https://github.com/akadirdgn/pharma-vision-OCR.git
     ```
 2.  Android Studio'da projeyi açın (`File > Open`).
 3.  Gradle senkronizasyonunun tamamlanmasını bekleyin.
