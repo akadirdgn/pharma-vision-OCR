@@ -2,5 +2,13 @@
     {
         "merged": "com.kadir.bitirme.app-mergeDebugResources-38:/layout/activity_main.xml",
         "source": "com.kadir.bitirme.app-main-41:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-mergeDebugResources-38:\\layout\\activity_camera.xml",
+        "source": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-main-41:\\layout\\activity_camera.xml"
+    },
+    {
+        "merged": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-mergeDebugResources-38:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-main-41:\\layout\\activity_main.xml"
     }
 ]

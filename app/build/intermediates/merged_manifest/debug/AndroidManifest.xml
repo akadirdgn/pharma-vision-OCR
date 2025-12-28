@@ -51,6 +51,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.kadir.bitirme.CameraActivity" />
 
         <uses-library
             android:name="androidx.camera.extensions.impl"
