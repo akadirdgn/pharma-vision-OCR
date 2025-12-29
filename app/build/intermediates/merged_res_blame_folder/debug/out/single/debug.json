@@ -1,26 +1,22 @@
 [
     {
-        "merged": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-merged_res-39:\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-main-41:\\layout\\activity_main.xml"
+        "merged": "com.kadir.bitirme.app-merged_res-39:/drawable_ic_launcher.xml.flat",
+        "source": "com.kadir.bitirme.app-main-41:/drawable/ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-merged_res-39:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-main-41:\\xml\\data_extraction_rules.xml"
+        "merged": "com.kadir.bitirme.app-merged_res-39:/layout_activity_camera.xml.flat",
+        "source": "com.kadir.bitirme.app-main-41:/layout/activity_camera.xml"
     },
     {
-        "merged": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-merged_res-39:\\xml_backup_rules.xml.flat",
-        "source": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-main-41:\\xml\\backup_rules.xml"
-    },
-    {
-        "merged": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-merged_res-39:\\drawable_ic_launcher.xml.flat",
-        "source": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-main-41:\\drawable\\ic_launcher.xml"
-    },
-    {
-        "merged": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-merged_res-39:\\layout_activity_camera.xml.flat",
-        "source": "C:\\Users\\kadir\\.gradle\\daemon\\8.2\\com.kadir.bitirme.app-main-41:\\layout\\activity_camera.xml"
+        "merged": "com.kadir.bitirme.app-merged_res-39:/xml_data_extraction_rules.xml.flat",
+        "source": "com.kadir.bitirme.app-main-41:/xml/data_extraction_rules.xml"
     },
     {
         "merged": "com.kadir.bitirme.app-merged_res-39:/layout_activity_main.xml.flat",
         "source": "com.kadir.bitirme.app-main-41:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.kadir.bitirme.app-merged_res-39:/xml_backup_rules.xml.flat",
+        "source": "com.kadir.bitirme.app-main-41:/xml/backup_rules.xml"
     }
 ]
