@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Background Circle with Gradient Effect -->
+    <path
+        android:fillColor="#4A90E2"
+        android:pathData="M54,18 a36,36 0 1,0 0,72 a36,36 0 1,0 0,-72z" />
+    
+    <!-- Inner Lighter Circle -->
+    <path
+        android:fillColor="#5BA3ED"
+        android:pathData="M54,24 a30,30 0 1,0 0,60 a30,30 0 1,0 0,-60z" />
+    
+    <!-- Medical Cross - White, Bold -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,35 h10 v14 h14 v10 h-14 v14 h-10 v-14 h-14 v-10 h14 z" />
+    
+    <!-- Pill/Capsule Accent - Left (Teal) -->
+    <path
+        android:fillColor="#50C9C3"
+        android:pathData="M40,50 a8,8 0 1,1 0,16 a8,8 0 1,1 0,-16z" />
+    
+    <!-- Pill/Capsule Accent - Right (Teal) -->
+    <path
+        android:fillColor="#50C9C3"
+        android:pathData="M68,50 a8,8 0 1,1 0,16 a8,8 0 1,1 0,-16z" />
+    
+    <!-- Small Highlight for 3D Effect - Top Left -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.3"
+        android:pathData="M42,28 a24,24 0 0,1 24,0 a24,24 0 0,0 -24,0z" />
+</vector>

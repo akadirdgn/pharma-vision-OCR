@@ -1,5 +1,34 @@
 <resources>
-    <string name="app_name">Bitirme</string>
-    <string name="tap_to_scan">Okumak için ekrana dokunun</string>
-    <string name="permission_required">Kamera izni gereklidir.</string>
+    <string name="app_name">İlaç Asistanı</string>
+    
+    <!-- Welcome Screen -->
+    <string name="welcome_title">İlaç Asistanı</string>
+    <string name="welcome_subtitle">Görme engelliler için akıllı ilaç tanıma</string>
+    <string name="welcome_description">Bu uygulama, ilaç kutularındaki bilgileri okur ve size sesli olarak iletir. Güvenle ilaçlarınızı tanıyabilirsiniz.</string>
+    <string name="start_scanning">Taramaya Başla</string>
+    <string name="how_it_works">Nasıl Çalışır?</string>
+    
+    <!-- Camera Screen -->
+    <string name="tap_to_scan">İlaç kutusunu kameraya tutun ve ekrana dokunun</string>
+    <string name="permission_required">Kamera izni gereklidir</string>
+    <string name="grant_permission">İzin Ver</string>
+    <string name="camera_permission_rationale">İlaç bilgilerini okuyabilmek için kamera iznine ihtiyacımız var</string>
+    
+    <!-- Info Dialog -->
+    <string name="info_title">Nasıl Kullanılır?</string>
+    <string name="info_step1">1. Kamerayı ilaç kutusuna yöneltin</string>
+    <string name="info_step2">2. İlaç adının net görünmesini sağlayın</string>
+    <string name="info_step3">3. Ekrana dokunun</string>
+    <string name="info_step4">4. İlaç bilgilerini dinleyin</string>
+    <string name="close">Kapat</string>
+    
+    <!-- Features -->
+    <string name="feature_ocr">Metin Tanıma</string>
+    <string name="feature_ocr_desc">ML Kit ile güçlü optik karakter tanıma</string>
+    <string name="feature_database">25+ İlaç Bilgisi</string>
+    <string name="feature_database_desc">Yaygın Türk ilaçları veritabanı</string>
+    <string name="feature_voice">Sesli Okuma</string>
+    <string name="feature_voice_desc">İlaç bilgilerini sesli olarak dinleyin</string>
+    <string name="feature_privacy">Gizlilik</string>
+    <string name="feature_privacy_desc">Tüm işlemler cihazınızda gerçekleşir</string>
 </resources>
