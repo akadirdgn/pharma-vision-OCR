@@ -97,6 +97,22 @@ class ProcessOcrTextUseCase(
     }
 
     /**
+     * Dozaj metnini TTS için düzenler (örn: "25mg" → "yirmi beş miligram")
+     */
+    private fun formatDosageForSpeech(dosage: String): String {
+        return dosage
+            .replace(Regex("(\\d+)\\s*mg"), "$1 miligram")
+            .replace(Regex("(\\d+)\\s*mcg"), "$1 mikrogram")
+            .replace(Regex("(\\d+)\\s*g"), "$1 gram")
+            .replace(Regex("(\\d+)\\s*ml"), "$1 mililitre")
+            .replace(Regex("(\\d+)/\\s*(\\d+)"), "$1 bölü $2")
+            // Sayıları kelime olarak okutmak için (opsiyonel)
+            .replace("0.5", "yarım")
+            .replace("1.5", "bir buçuk")
+            .replace("2.5", "iki buçuk")
+    }
+
+    /**
      * İlaç bilgilerinden TTS için konuşma metni oluşturur
      */
     private fun buildSpeechText(
@@ -111,14 +127,18 @@ class ProcessOcrTextUseCase(
 
         // Dozaj kontrolü
         if (detectedDosage != null) {
+            val formattedDetected = formatDosageForSpeech(detectedDosage)
+            val formattedExpected = formatDosageForSpeech(expectedDosage)
+            
             if (detectedDosage.equals(expectedDosage, ignoreCase = true)) {
-                sb.append("Dozaj: $detectedDosage. Doğru dozaj tespit edildi. ")
+                sb.append("Dozaj: $formattedDetected. Doğru dozaj tespit edildi. ")
             } else {
-                sb.append("Tespit edilen dozaj: $detectedDosage. ")
-                sb.append("Veritabanındaki dozaj: $expectedDosage. Lütfen kontrol edin. ")
+                sb.append("Tespit edilen dozaj: $formattedDetected. ")
+                sb.append("Veritabanındaki dozaj: $formattedExpected. Lütfen kontrol edin. ")
             }
         } else {
-            sb.append("Dozaj: $expectedDosage. ")
+            val formattedExpected = formatDosageForSpeech(expectedDosage)
+            sb.append("Dozaj: $formattedExpected. ")
         }
 
         // İlaç formu

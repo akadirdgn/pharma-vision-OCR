@@ -256,6 +256,15 @@ class MedicineDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 usage = "Hipertansiyon için. Günde 1 defa.",
                 sideEffects = "Baş dönmesi, yorgunluk",
                 warnings = "Hamilelikte kullanılmamalı"
+            ),
+            MedicineEntity(
+                name = "Arveles",
+                genericName = "Deksketoprofen",
+                dosage = "25mg",
+                form = "Tablet",
+                usage = "Akut ağrı tedavisi için. 8 saat arayla 1 tablet.",
+                sideEffects = "Mide bulantısı, baş ağrısı, uyuşukluk",
+                warnings = "Maksimum 3 gün kullanılmalı, tok karnına alınmalı"
             )
         )
 
@@ -276,7 +285,7 @@ class MedicineDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
     companion object {
         private const val DATABASE_NAME = "medicine.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 3
 
         const val TABLE_MEDICINES = "medicines"
         const val COLUMN_ID = "id"
