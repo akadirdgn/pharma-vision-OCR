@@ -4,19 +4,26 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kadir.bitirme.R
 import com.kadir.bitirme.databinding.ActivityMainBinding
 import com.kadir.bitirme.ui.camera.CameraActivity
+import com.kadir.bitirme.ui.history.HistoryActivity
+import com.kadir.bitirme.data.repository.DoseTrackerRepository
 import com.kadir.bitirme.utils.tts.TextToSpeechManager
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var ttsManager: TextToSpeechManager
+    private lateinit var doseTrackerRepository: DoseTrackerRepository
+    private lateinit var doseTrackerAdapter: DoseTrackerAdapter
+    private lateinit var gestureDetector: android.view.GestureDetector
 
     companion object {
         private const val CAMERA_PERMISSION_CODE = 100
@@ -27,14 +34,28 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize TTS
+        // Initialize TTS & Repo
         ttsManager = TextToSpeechManager(this)
+        doseTrackerRepository = DoseTrackerRepository(this)
 
         // Welcome message
-        ttsManager.speak(getString(R.string.welcome_title) + ". " + getString(R.string.welcome_subtitle))
+        ttsManager.speak("İlaç Asistanı. Kamerayı açmak için ekrana iki kez dokunun.")
 
-        // Setup click-to-speak for accessibility
+        // Setup accessibility click listeners
         setupAccessibility()
+        setupDoseTracker()
+        
+        // Ekrana çift dokunarak kamerayı açma tetikleyicisi
+        gestureDetector = android.view.GestureDetector(this, object : android.view.GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTap(e: android.view.MotionEvent): Boolean {
+                if (checkCameraPermission()) {
+                    startCameraActivity()
+                } else {
+                    requestCameraPermission()
+                }
+                return true
+            }
+        })
 
         // Start button - İzin kontrolü ile kamera aç
         binding.btnStart.setOnClickListener {
@@ -49,38 +70,54 @@ class MainActivity : AppCompatActivity() {
         binding.btnHelp.setOnClickListener {
             showHowItWorksDialog()
         }
+
+        // History button
+        binding.btnHistory.setOnClickListener {
+            ttsManager.speak("Tarama geçmişi açılıyor.")
+            startActivity(Intent(this, HistoryActivity::class.java))
+        }
+    }
+
+    override fun dispatchTouchEvent(ev: android.view.MotionEvent): Boolean {
+        gestureDetector.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateDoses()
+    }
+
+    private fun setupDoseTracker() {
+        doseTrackerAdapter = DoseTrackerAdapter(emptyList()) { dose, isTaken ->
+            doseTrackerRepository.addOrUpdateDose(dose.medicineName, isTaken)
+            if (isTaken) {
+                ttsManager.speak("${dose.medicineName} alındı olarak işaretlendi.")
+            } else {
+                ttsManager.speak("${dose.medicineName} alınmadı olarak işaretlendi.")
+            }
+            updateDoses()
+        }
+        binding.rvDoseTracker.layoutManager = LinearLayoutManager(this)
+        binding.rvDoseTracker.adapter = doseTrackerAdapter
+    }
+
+    private fun updateDoses() {
+        val doses = doseTrackerRepository.getTodayDoses()
+        if (doses.isEmpty()) {
+            binding.rvDoseTracker.visibility = View.GONE
+            binding.tvNoDoses.visibility = View.VISIBLE
+        } else {
+            binding.rvDoseTracker.visibility = View.VISIBLE
+            binding.tvNoDoses.visibility = View.GONE
+            doseTrackerAdapter.updateData(doses)
+        }
     }
 
     private fun setupAccessibility() {
-        // Logo - tıklanınca uygulama adını oku
-        binding.ivLogo.setOnClickListener {
-            ttsManager.speak(getString(R.string.app_name))
-        }
-
         // Title - tıklanınca başlığı oku
         binding.tvTitle.setOnClickListener {
             ttsManager.speak(getString(R.string.welcome_title))
-        }
-
-        // Subtitle - tıklanınca alt başlığı oku
-        binding.tvSubtitle.setOnClickListener {
-            ttsManager.speak(getString(R.string.welcome_subtitle))
-        }
-
-        // Description card - tıklanınca açıklamayı oku
-        binding.cardDescription.setOnClickListener {
-            ttsManager.speak(getString(R.string.welcome_description))
-        }
-
-        // Features layout - tıklanınca özellikleri oku
-        binding.featuresLayout.setOnClickListener {
-            val features = """
-                ${getString(R.string.feature_ocr)}. ${getString(R.string.feature_ocr_desc)}.
-                ${getString(R.string.feature_database)}. ${getString(R.string.feature_database_desc)}.
-                ${getString(R.string.feature_voice)}. ${getString(R.string.feature_voice_desc)}.  
-                ${getString(R.string.feature_privacy)}. ${getString(R.string.feature_privacy_desc)}.
-            """.trimIndent()
-            ttsManager.speak(features)
         }
     }
 
@@ -158,8 +195,14 @@ class MainActivity : AppCompatActivity() {
         ttsManager.speak(message)
     }
 
+    override fun onPause() {
+        super.onPause()
+        ttsManager.pause()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         ttsManager.shutdown()
+        doseTrackerRepository.close()
     }
 }

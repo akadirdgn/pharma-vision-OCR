@@ -8,6 +8,7 @@ import java.util.Locale
 class TextToSpeechManager(context: Context) : TextToSpeech.OnInitListener {
     private var tts: TextToSpeech? = null
     private var isInitialized = false
+    private var pendingText: String? = null
 
     init {
         tts = TextToSpeech(context, this)
@@ -20,23 +21,45 @@ class TextToSpeechManager(context: Context) : TextToSpeech.OnInitListener {
                 Log.e(TAG, "Turkish language is not supported or missing data.")
             } else {
                 isInitialized = true
+                pendingText?.let {
+                    speak(it)
+                    pendingText = null
+                }
             }
         } else {
             Log.e(TAG, "TTS Initialization failed!")
         }
     }
 
-    fun speak(text: String) {
+    fun speak(text: String, queueMode: Int = TextToSpeech.QUEUE_FLUSH) {
         if (isInitialized) {
-            tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+            tts?.speak(text, queueMode, null, null)
         } else {
-            Log.e(TAG, "TTS not initialized yet")
+            pendingText = text
+            Log.e(TAG, "TTS not initialized yet. Queued text for later: $text")
         }
     }
 
+    /**
+     * TTS'i duraklat (lifecycle için)
+     */
+    fun pause() {
+        if (isInitialized && tts?.isSpeaking == true) {
+            tts?.stop()
+        }
+    }
+
+    /**
+     * TTS'in konuşup konuşmadığını kontrol et
+     */
+    fun isSpeaking(): Boolean {
+        return tts?.isSpeaking ?: false
+    }
+
     fun shutdown() {
-        tts?.stop()
+        pause()
         tts?.shutdown()
+        isInitialized = false
     }
 
     companion object {

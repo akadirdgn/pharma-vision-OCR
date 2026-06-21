@@ -6,13 +6,21 @@
     <string name="welcome_subtitle">Görme engelliler için akıllı ilaç tanıma</string>
     <string name="welcome_description">Bu uygulama, ilaç kutularındaki bilgileri okur ve size sesli olarak iletir. Güvenle ilaçlarınızı tanıyabilirsiniz.</string>
     <string name="start_scanning">Taramaya Başla</string>
+    <string name="scan_history">Tarama Geçmişi</string>
     <string name="how_it_works">Nasıl Çalışır?</string>
     
+    <!-- Dose Tracker -->
+    <string name="today_doses">Bugünkü İlaçlarım</string>
+    <string name="mark_as_taken">İçildi Olarak İşaretle</string>
+    <string name="dose_taken_announcement">%1$s bugün içildi olarak işaretlendi.</string>
+    <string name="dose_untaken_announcement">%1$s işareti kaldırıldı.</string>
+    
     <!-- Camera Screen -->
-    <string name="tap_to_scan">İlaç kutusunu kameraya tutun ve ekrana dokunun</string>
+    <string name="tap_to_scan">Okutmak için ekrana dokunun</string>
     <string name="permission_required">Kamera izni gereklidir</string>
     <string name="grant_permission">İzin Ver</string>
     <string name="camera_permission_rationale">İlaç bilgilerini okuyabilmek için kamera iznine ihtiyacımız var</string>
+    <string name="set_reminder">Hatırlatıcı Kur</string>
     
     <!-- Info Dialog -->
     <string name="info_title">Nasıl Kullanılır?</string>
@@ -22,13 +30,14 @@
     <string name="info_step4">4. İlaç bilgilerini dinleyin</string>
     <string name="close">Kapat</string>
     
-    <!-- Features -->
-    <string name="feature_ocr">Metin Tanıma</string>
-    <string name="feature_ocr_desc">ML Kit ile güçlü optik karakter tanıma</string>
-    <string name="feature_database">25+ İlaç Bilgisi</string>
-    <string name="feature_database_desc">Yaygın Türk ilaçları veritabanı</string>
-    <string name="feature_voice">Sesli Okuma</string>
-    <string name="feature_voice_desc">İlaç bilgilerini sesli olarak dinleyin</string>
-    <string name="feature_privacy">Gizlilik</string>
-    <string name="feature_privacy_desc">Tüm işlemler cihazınızda gerçekleşir</string>
+    <!-- Content Descriptions (Accessibility) -->
+    <string name="cd_start_scan">Yeni bir ilaç taramak için kamerayı aç. Büyük sarı buton.</string>
+    <string name="cd_scan_history">Önceden taradığınız ilaçların listesini gösterir.</string>
+    <string name="cd_help">Uygulamanın nasıl kullanılacağını sesli olarak dinleyin.</string>
+    <string name="cd_capture_button">Fotoğrafı çek ve metni oku.</string>
+    <string name="cd_flashlight">Kamera flaşını aç veya kapat.</string>
+    <string name="cd_reminder_button">Taranan ilaç için hatırlatıcı kur.</string>
+    <string name="cd_back_button">Geri dön.</string>
+    <string name="cd_clear_history">Tüm geçmişi sil.</string>
+    <string name="cd_play_speech">Bu ilaç bilgisini tekrar sesli oku.</string>
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="@color/background_dark"
     android:fillViewport="true"
     tools:context=".ui.main.MainActivity">
 
@@ -13,336 +13,129 @@
         android:layout_height="wrap_content"
         android:padding="24dp">
 
-        <!-- App Logo/Icon -->
-        <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="32dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher_foreground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <!-- App Title -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/welcome_title"
             android:textColor="@color/text_primary"
-            android:textSize="32sp"
+            android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivLogo" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Subtitle -->
-        <TextView
-            android:id="@+id/tvSubtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:text="@string/welcome_subtitle"
-            android:textColor="@color/text_secondary"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-        <!-- Description Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:cardBackgroundColor="@color/card_background"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="4dp"
-                    android:text="@string/welcome_description"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Features Grid -->
-        <LinearLayout
-            android:id="@+id/featuresLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardDescription">
-
-            <!-- Feature Row 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <!-- Feature: OCR -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/card_background"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="📷"
-                            android:textSize="32sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/feature_ocr"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="@string/feature_ocr_desc"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Feature: Database -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/card_background"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="💊"
-                            android:textSize="32sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/feature_database"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="@string/feature_database_desc"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <!-- Feature Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <!-- Feature: Voice -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/card_background"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔊"
-                            android:textSize="32sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/feature_voice"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="@string/feature_voice_desc"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Feature: Privacy -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/card_background"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔒"
-                            android:textSize="32sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/feature_privacy"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="@string/feature_privacy_desc"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Start Button -->
+        <!-- Start Scanning Button (HUGE) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnStart"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:layout_marginTop="32dp"
-            android:backgroundTint="@color/primary_blue"
-            android:contentDescription="@string/start_scanning"
+            android:backgroundTint="@color/primary_yellow"
+            android:contentDescription="@string/cd_start_scan"
             android:fontFamily="sans-serif-medium"
             android:text="@string/start_scanning"
             android:textAllCaps="false"
-            android:textSize="18sp"
-            app:cornerRadius="12dp"
-            app:elevation="4dp"
+            android:textColor="@color/text_on_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:cornerRadius="16dp"
+            app:elevation="8dp"
             app:icon="@android:drawable/ic_menu_camera"
             app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            app:iconSize="32dp"
+            app:iconTint="@color/text_on_primary"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <!-- Dose Tracker Section (Bugünkü İlaçlarım) -->
+        <TextView
+            android:id="@+id/tvDoseTrackerTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/today_doses"
+            android:textColor="@color/primary_yellow"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/btnStart" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDoseTracker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/tvDoseTrackerTitle"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_dose_tracker" />
+
+        <TextView
+            android:id="@+id/tvNoDoses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Bugün alınacak ilaç bulunmuyor."
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvDoseTrackerTitle" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierDose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="rvDoseTracker,tvNoDoses" />
+
+        <!-- History Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHistory"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/cd_scan_history"
+            android:text="@string/scan_history"
+            android:textAllCaps="false"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_recent_history"
+            app:iconGravity="textStart"
             app:iconPadding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/featuresLayout" />
+            app:iconSize="28dp"
+            app:iconTint="@color/text_primary"
+            app:layout_constraintTop_toBottomOf="@id/barrierDose"
+            app:strokeColor="@color/primary_yellow"
+            app:strokeWidth="3dp" />
 
         <!-- Help Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnHelp"
             style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
-            android:contentDescription="@string/how_it_works"
+            android:layout_marginBottom="32dp"
+            android:contentDescription="@string/cd_help"
             android:text="@string/how_it_works"
             android:textAllCaps="false"
-            android:textColor="@color/primary_blue"
-            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_menu_help"
             app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconTint="@color/primary_blue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnStart"
-            app:strokeColor="@color/primary_blue"
-            app:strokeWidth="2dp" />
+            app:iconPadding="12dp"
+            app:iconSize="28dp"
+            app:iconTint="@color/text_primary"
+            app:layout_constraintTop_toBottomOf="@id/btnHistory"
+            app:strokeColor="@color/primary_yellow"
+            app:strokeWidth="3dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

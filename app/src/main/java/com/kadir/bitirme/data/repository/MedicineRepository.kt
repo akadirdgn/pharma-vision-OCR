@@ -2,6 +2,7 @@ package com.kadir.bitirme.data.repository
 
 import android.content.Context
 import android.database.Cursor
+import android.util.LruCache
 import com.kadir.bitirme.data.local.MedicineDatabaseHelper
 import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.COLUMN_DOSAGE
 import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.COLUMN_FORM
@@ -11,6 +12,8 @@ import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.COLUMN_NAME
 import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.COLUMN_SIDE_EFFECTS
 import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.COLUMN_USAGE
 import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.COLUMN_WARNINGS
+import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.COLUMN_CATEGORY
+import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.COLUMN_INTERACTING_DRUGS
 import com.kadir.bitirme.data.local.MedicineDatabaseHelper.Companion.TABLE_MEDICINES
 import com.kadir.bitirme.data.model.MedicineEntity
 
@@ -21,6 +24,9 @@ import com.kadir.bitirme.data.model.MedicineEntity
 class MedicineRepository(context: Context) {
 
     private val dbHelper = MedicineDatabaseHelper(context)
+    
+    // LRU Cache for fuzzy search results (max 50 entries)
+    private val searchCache = LruCache<String, List<MedicineEntity>>(50)
 
     /**
      * İlaç adına göre tam eşleşme arar
@@ -63,9 +69,14 @@ class MedicineRepository(context: Context) {
     /**
      * Fuzzy search - benzer isimleri bulur
      * Levenshtein distance kullanır
+     * LRU Cache kullanır
      */
     fun fuzzySearch(query: String): List<MedicineEntity> {
         if (query.isBlank()) return emptyList()
+        
+        // Check cache first
+        val cacheKey = query.lowercase().trim()
+        searchCache.get(cacheKey)?.let { return it }
 
         val db = dbHelper.readableDatabase
         val cursor = db.query(
@@ -84,19 +95,30 @@ class MedicineRepository(context: Context) {
         val exactMatch = allMedicines.filter { 
             it.name.equals(query, ignoreCase = true) 
         }
-        if (exactMatch.isNotEmpty()) return exactMatch
+        if (exactMatch.isNotEmpty()) {
+            searchCache.put(cacheKey, exactMatch)
+            return exactMatch
+        }
 
         // Başlangıç ile eşleşme
         val startsWith = allMedicines.filter { 
             it.name.startsWith(query, ignoreCase = true) 
         }
-        if (startsWith.isNotEmpty()) return startsWith.take(3)
+        if (startsWith.isNotEmpty()) {
+            val result = startsWith.take(3)
+            searchCache.put(cacheKey, result)
+            return result
+        }
 
         // İçeren eşleşme
         val contains = allMedicines.filter { 
             it.name.contains(query, ignoreCase = true) 
         }
-        if (contains.isNotEmpty()) return contains.take(3)
+        if (contains.isNotEmpty()) {
+            val result = contains.take(3)
+            searchCache.put(cacheKey, result)
+            return result
+        }
 
         // Levenshtein distance ile benzerlik hesapla
         val similarities = allMedicines.map { medicine ->
@@ -109,11 +131,15 @@ class MedicineRepository(context: Context) {
         }
 
         // Benzerlik skoru > 0.6 olanları döndür
-        return similarities
+        val result = similarities
             .filter { it.second > 0.6 }
             .sortedByDescending { it.second }
             .take(3)
             .map { it.first }
+        
+        // Cache the result
+        searchCache.put(cacheKey, result)
+        return result
     }
 
     /**
@@ -147,6 +173,8 @@ class MedicineRepository(context: Context) {
             put(COLUMN_USAGE, medicine.usage)
             put(COLUMN_SIDE_EFFECTS, medicine.sideEffects)
             put(COLUMN_WARNINGS, medicine.warnings)
+            put(COLUMN_CATEGORY, medicine.category)
+            put(COLUMN_INTERACTING_DRUGS, medicine.interactingDrugs)
         }
         return db.insert(TABLE_MEDICINES, null, values)
     }
@@ -191,7 +219,9 @@ class MedicineRepository(context: Context) {
             form = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FORM)),
             usage = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USAGE)),
             sideEffects = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SIDE_EFFECTS)),
-            warnings = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WARNINGS))
+            warnings = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WARNINGS)),
+            category = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
+            interactingDrugs = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_INTERACTING_DRUGS))
         )
     }
 

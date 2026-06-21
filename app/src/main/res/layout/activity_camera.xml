@@ -11,142 +11,170 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/tap_to_scan"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/cd_capture_button"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Top Instruction Card -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardInstruction"
-        android:layout_width="0dp"
+    <!-- Top Instruction Panel -->
+    <LinearLayout
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardBackgroundColor="#E6FFFFFF"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="#D9000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent">
+        
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_back_button"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/white" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvInstruction"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:text="@string/tap_to_scan"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📸"
-                android:textSize="32sp" />
-
-            <TextView
-                android:id="@+id/tvInstruction"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="@string/tap_to_scan"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+        <!-- Flashlight Button -->
+        <ImageButton
+            android:id="@+id/btnFlashlight"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_flashlight"
+            android:src="@android:drawable/ic_menu_camera"
+            app:tint="@color/white" />
+            
+    </LinearLayout>
 
     <!-- Scan Frame Overlay (Görsel rehber) -->
     <View
         android:id="@+id/scanFrameOverlay"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
         android:background="@drawable/scan_frame"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/topPanel" />
 
-    <!-- Bottom Action Area -->
-    <LinearLayout
-        android:id="@+id/bottomActions"
+    <!-- Scan Result Overlay (Doğrudan ekrana yazdırma) -->
+    <ScrollView
+        android:id="@+id/svScanResult"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="24dp"
+        android:background="#CC000000"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/topPanel"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tvScanResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:lineSpacingExtra="6dp" />
+    </ScrollView>
+
+    <!-- Processing Indicator -->
+    <LinearLayout
+        android:id="@+id/cardProcessing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="32dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topPanel"
+        tools:visibility="visible">
 
-        <!-- Capture Button -->
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fabCapture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/primary_blue"
-            android:contentDescription="@string/tap_to_scan"
-            android:text="Tara"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:elevation="6dp"
-            app:icon="@android:drawable/ic_menu_camera"
-            app:iconTint="@color/white" />
+        <ProgressBar
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:indeterminateTint="@color/primary_yellow" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="#99000000"
-            android:padding="8dp"
-            android:text="veya ekrana dokunun"
+            android:layout_marginTop="24dp"
+            android:text="İlaç bilgisi okunuyor..."
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
-    <!-- Processing Indicator -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardProcessing"
-        android:layout_width="wrap_content"
+    <!-- Bottom Action Area -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:cardBackgroundColor="@color/card_background"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible">
+        android:background="@color/background_dark"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="32dp">
+        <!-- Reminder Button (Tarama başarılı olunca görünür) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReminder"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/cd_reminder_button"
+            android:text="@string/set_reminder"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_agenda"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            app:iconSize="32dp"
+            app:iconTint="@color/white"
+            app:strokeColor="@color/primary_yellow"
+            app:strokeWidth="3dp" />
 
-            <ProgressBar
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:indeterminateTint="@color/primary_blue" />
+        <!-- Capture Button (HUGE) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCapture"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:backgroundTint="@color/primary_yellow"
+            android:contentDescription="@string/cd_capture_button"
+            android:text="TARA"
+            android:textColor="@color/text_on_primary"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:cornerRadius="16dp"
+            app:elevation="8dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="İşleniyor..."
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,15 +3,18 @@ package com.kadir.bitirme.domain.usecase
 import android.util.Log
 import com.kadir.bitirme.data.model.ProcessedResult
 import com.kadir.bitirme.data.repository.MedicineRepository
+import com.kadir.bitirme.data.repository.ScanHistoryRepository
 import com.kadir.bitirme.domain.processor.MedicineTextProcessor
+import java.util.concurrent.TimeUnit
 
 /**
  * OCR metnini işleme use case
- * OCR → Filtreleme → Veritabanı Arama → TTS pipeline
+ * OCR → Filtreleme → Veritabanı Arama → Etkileşim Kontrolü → TTS pipeline
  */
 class ProcessOcrTextUseCase(
     private val textProcessor: MedicineTextProcessor,
-    private val repository: MedicineRepository
+    private val repository: MedicineRepository,
+    private val scanHistoryRepository: ScanHistoryRepository
 ) {
 
     /**
@@ -58,12 +61,15 @@ class ProcessOcrTextUseCase(
             if (matches.isNotEmpty()) {
                 val bestMatch = matches.first()
                 
+                // 6. Etkileşim Kontrolü (Son 24 saat içinde taranan ilaçlarla)
+                val interactionWarning = checkDrugInteractions(bestMatch)
+
                 // Dozaj bilgilerini karşılaştır
                 val detectedDosage = medicineInfo.dosage
                 val expectedDosage = bestMatch.dosage
 
                 // TTS için konuşma metni oluştur
-                val speech = buildSpeechText(bestMatch, detectedDosage, expectedDosage)
+                val speech = buildSpeechText(bestMatch, detectedDosage, expectedDosage, interactionWarning)
 
                 Log.d(TAG, "Match found: ${bestMatch.name} - Processing time: ${processingTime}ms")
 
@@ -97,6 +103,43 @@ class ProcessOcrTextUseCase(
     }
 
     /**
+     * Taranan ilaç ile son 24 saatteki başarılı taramalar arasında etkileşim kontrolü yapar
+     */
+    private fun checkDrugInteractions(currentMedicine: com.kadir.bitirme.data.model.MedicineEntity): String? {
+        try {
+            if (currentMedicine.interactingDrugs.isBlank()) return null
+
+            val recentScans = scanHistoryRepository.getRecentScans(10) // Son 10 taramayı al
+            if (recentScans.isEmpty()) return null
+            
+            val oneDayAgo = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)
+            val interactionsList = currentMedicine.interactingDrugs.split(",").map { it.trim().lowercase() }
+            
+            for (scan in recentScans) {
+                if (!scan.isSuccess || scan.scanDate < oneDayAgo) continue
+                
+                // Kendi kendine etkileşim uyarısı verme
+                if (scan.medicineName.equals(currentMedicine.name, ignoreCase = true)) continue
+                
+                // Taranan ilacın detayını bulmak için repository'den çek
+                val pastMedicineMatches = repository.fuzzySearch(scan.medicineName)
+                if (pastMedicineMatches.isNotEmpty()) {
+                    val pastMedicine = pastMedicineMatches.first()
+                    val pastGenericName = pastMedicine.genericName.lowercase()
+                    
+                    // Etken madde eşleşmesi kontrolü
+                    if (interactionsList.any { it.contains(pastGenericName) || pastGenericName.contains(it) }) {
+                        return "DİKKAT! Bu ilacın, yakın zamanda tarattığınız ${pastMedicine.name} ile etkileşim riski bulunmaktadır. Lütfen doktorunuza danışın."
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking interactions", e)
+        }
+        return null
+    }
+
+    /**
      * Dozaj metnini TTS için düzenler (örn: "25mg" → "yirmi beş miligram")
      */
     private fun formatDosageForSpeech(dosage: String): String {
@@ -118,12 +161,18 @@ class ProcessOcrTextUseCase(
     private fun buildSpeechText(
         medicine: com.kadir.bitirme.data.model.MedicineEntity,
         detectedDosage: String?,
-        expectedDosage: String
+        expectedDosage: String,
+        interactionWarning: String?
     ): String {
         val sb = StringBuilder()
 
         // İlaç adı
         sb.append("${medicine.name}. ")
+        
+        // Etkileşim uyarısı varsa hemen en başta söyle (hayat kurtarıcı özellik)
+        if (interactionWarning != null) {
+            sb.append(interactionWarning).append(" ")
+        }
 
         // Dozaj kontrolü
         if (detectedDosage != null) {

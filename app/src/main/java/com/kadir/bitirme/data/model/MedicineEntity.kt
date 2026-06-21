@@ -12,7 +12,9 @@ data class MedicineEntity(
     val form: String,              // İlaç formu (örn: "Tablet", "Şurup", "Enjeksiyon")
     val usage: String,             // Kullanım talimatı
     val sideEffects: String?,      // Yan etkiler (opsiyonel)
-    val warnings: String?          // Uyarılar (opsiyonel)
+    val warnings: String?,         // Uyarılar (opsiyonel)
+    val category: String = "",     // İlaç kategorisi (örn: "Ağrı Kesici", "Antibiyotik")
+    val interactingDrugs: String = "" // Etkileşime girdiği ilaç etken maddeleri (virgülle ayrılmış)
 )
 
 /**
